@@ -316,12 +316,17 @@ export function TopicDetail(props: TopicDetailProps) {
           }
 
           topicHtml = topicDom.body.innerHTML;
+          const topicHasContent = otherElems.length > 0;
 
           setLinks(listLinks);
-          setHasContent(otherElems.length > 0);
+          setHasContent(topicHasContent);
           setContributionUrl(contributionUrl);
           setHasEnoughLinks(links.length >= 3);
           setTopicHtmlTitle(titleElem?.textContent || '');
+
+          if (!topicHasContent && renderer === 'editor') {
+            setActiveTab('ai');
+          }
         } else {
           setLinks((response as RoadmapContentDocument)?.links || []);
           setTopicTitle((response as RoadmapContentDocument)?.title || '');
@@ -588,7 +593,7 @@ export function TopicDetail(props: TopicDetailProps) {
                   <a
                     href={contributionUrl}
                     target="_blank"
-                    className="hidden items-center justify-center rounded-md border bg-gray-200 px-2 py-2 text-sm hover:bg-gray-300 sm:flex"
+                    className="hidden transition-all items-center justify-center rounded-md px-2 py-2 text-sm hover:bg-gray-200 sm:flex"
                   >
                     <GitHubIcon className="mr-2 inline-block h-4 w-4 text-current" />
                     Help us Improve this Content
